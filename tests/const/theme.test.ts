@@ -1,3 +1,4 @@
+import {describe, expect, it} from 'vitest';
 import {ThemeMap} from '../../src/const/theme';
 
 describe('Validate all theme', () => {

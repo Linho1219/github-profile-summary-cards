@@ -1,3 +1,4 @@
+import {describe, expect, it, afterEach} from 'vitest';
 import {getContributionByYear} from '../../src/github-api/contributions-by-year';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';

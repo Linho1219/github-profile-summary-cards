@@ -1,3 +1,4 @@
+import {describe, expect, it, afterEach} from 'vitest';
 import {getRepoLanguages} from '../../src/github-api/repos-per-language';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';

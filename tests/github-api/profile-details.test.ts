@@ -1,3 +1,4 @@
+import {describe, expect, it, afterEach} from 'vitest';
 import {getProfileDetails} from '../../src/github-api/profile-details';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';

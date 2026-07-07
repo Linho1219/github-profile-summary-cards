@@ -122,7 +122,6 @@ tags.*
 .vercel
 
 # Ignore built ts files
-lib/**/*
 tests/runner/*
 
 # Ignore jest report

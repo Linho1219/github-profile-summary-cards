@@ -1,3 +1,4 @@
+import {describe, expect, it, afterEach} from 'vitest';
 import {getCommitLanguage} from '../../src/github-api/commits-per-language';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';

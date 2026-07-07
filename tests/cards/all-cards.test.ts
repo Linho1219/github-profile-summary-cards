@@ -1,3 +1,4 @@
+import {Mock, vi, describe, expect, it, beforeEach} from 'vitest';
 import {createProfileDetailsCard} from '../../src/cards/profile-details-card';
 import {createReposPerLanguageCard} from '../../src/cards/repos-per-language-card';
 import {createCommitsPerLanguageCard} from '../../src/cards/most-commit-language-card';
@@ -11,24 +12,24 @@ import {getProductiveTime} from '../../src/github-api/productive-time';
 import {getContributionByYear} from '../../src/github-api/contributions-by-year';
 
 // Mock all dependencies
-jest.mock('../../src/utils/file-writer');
-jest.mock('../../src/github-api/profile-details');
-jest.mock('../../src/github-api/repos-per-language');
-jest.mock('../../src/github-api/commits-per-language');
-jest.mock('../../src/github-api/productive-time');
-jest.mock('../../src/github-api/contributions-by-year');
+vi.mock('../../src/utils/file-writer');
+vi.mock('../../src/github-api/profile-details');
+vi.mock('../../src/github-api/repos-per-language');
+vi.mock('../../src/github-api/commits-per-language');
+vi.mock('../../src/github-api/productive-time');
+vi.mock('../../src/github-api/contributions-by-year');
 
-const mockWriteSVG = writeSVG as jest.Mock;
+const mockWriteSVG = writeSVG as Mock;
 
 describe('Cards Generation (Integration)', () => {
     const TOKEN = 'dummy_token';
     const USERNAME = 'testuser';
 
     beforeEach(() => {
-        jest.resetAllMocks();
+        vi.resetAllMocks();
 
         // Setup default mock returns
-        (getProfileDetails as jest.Mock).mockResolvedValue({
+        (getProfileDetails as Mock).mockResolvedValue({
             name: 'Test User',
             email: 'test@example.com',
             contributionYears: [2024],
@@ -40,17 +41,17 @@ describe('Cards Generation (Integration)', () => {
             contributions: [{date: new Date(), contributionCount: 5}],
             createdAt: '2020-01-01T00:00:00Z'
         });
-        (getContributionByYear as jest.Mock).mockResolvedValue({
+        (getContributionByYear as Mock).mockResolvedValue({
             totalContributions: 500,
             totalCommitContributions: 400
         });
-        (getRepoLanguages as jest.Mock).mockResolvedValue({
+        (getRepoLanguages as Mock).mockResolvedValue({
             getLanguageMap: () => new Map([['TypeScript', {count: 100, color: '#abcdef'}]])
         });
-        (getCommitLanguage as jest.Mock).mockResolvedValue({
+        (getCommitLanguage as Mock).mockResolvedValue({
             getLanguageMap: () => new Map([['TypeScript', {count: 500, color: '#abcdef'}]])
         });
-        (getProductiveTime as jest.Mock).mockResolvedValue({
+        (getProductiveTime as Mock).mockResolvedValue({
             productiveDate: [new Date().toISOString()]
         });
     });

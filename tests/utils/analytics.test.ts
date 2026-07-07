@@ -1,11 +1,13 @@
+import {Mock, vi} from 'vitest';
+
 describe('Analytics Utils', () => {
     const ORIGINAL_ENV = process.env;
     const ORIGINAL_FETCH = global.fetch;
 
     beforeEach(() => {
-        jest.resetModules();
+        vi.resetModules();
         process.env = {...ORIGINAL_ENV};
-        global.fetch = jest.fn(() =>
+        global.fetch = vi.fn(() =>
             Promise.resolve({
                 ok: true,
                 text: () => Promise.resolve('ok')
@@ -23,7 +25,7 @@ describe('Analytics Utils', () => {
         delete process.env.GA_API_SECRET;
 
         // Dynamic import to pick up env changes if needed, though simple import works if env is checked at runtime
-        const {sendAnalytics} = require('../../src/utils/analytics');
+        const {sendAnalytics} = await import('../../src/utils/analytics');
 
         await sendAnalytics('test_event');
 
@@ -35,7 +37,7 @@ describe('Analytics Utils', () => {
         process.env.GA_API_SECRET = 'SECRET';
         delete process.env.VERCEL;
 
-        const {sendAnalytics} = require('../../src/utils/analytics');
+        const {sendAnalytics} = await import('../../src/utils/analytics');
 
         await sendAnalytics('test_event');
 
@@ -47,7 +49,7 @@ describe('Analytics Utils', () => {
         process.env.GA_API_SECRET = 'SECRET';
         process.env.VERCEL = '1';
 
-        const {sendAnalytics} = require('../../src/utils/analytics');
+        const {sendAnalytics} = await import('../../src/utils/analytics');
 
         const username = 'testuser';
         // Mock headers
@@ -60,7 +62,7 @@ describe('Analytics Utils', () => {
 
         expect(global.fetch).toHaveBeenCalledTimes(1);
 
-        const [url, options] = (global.fetch as jest.Mock).mock.calls[0];
+        const [url, options] = (global.fetch as Mock).mock.calls[0];
 
         expect(url).toContain('measurement_id=G-TEST');
         expect(options.method).toBe('POST');
@@ -84,10 +86,10 @@ describe('Analytics Utils', () => {
         process.env.GA_API_SECRET = 'SECRET';
         process.env.VERCEL = '1';
 
-        const {sendAnalytics} = require('../../src/utils/analytics');
+        const {sendAnalytics} = await import('../../src/utils/analytics');
 
-        (global.fetch as jest.Mock).mockRejectedValueOnce(new Error('Network Error'));
-        const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+        (global.fetch as Mock).mockRejectedValueOnce(new Error('Network Error'));
+        const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
 
         await sendAnalytics('test_event');
 

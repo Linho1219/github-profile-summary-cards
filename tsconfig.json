@@ -1,18 +1,25 @@
 {
     "compilerOptions": {
+        "types": ["node"],
         "target": "es6",
         "module": "commonjs",
         "outDir": "./lib",
         "rootDir": "./src",
         "strict": true,
         "noImplicitAny": true,
-        "esModuleInterop": true
+        "esModuleInterop": true,
+        "skipLibCheck": true
     },
+    "include": [
+        "src/**/*"
+    ],
     "exclude": [
         "node_modules",
+        "eslint.config.ts",
+        "vite.config.ts",
+        "vitest.config.ts",
         "**/*.test.ts",
         "tests/*.ts",
-        "api/**/*.ts",
         "scripts/**/*.ts"
     ]
 }

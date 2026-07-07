@@ -1,6 +1,6 @@
 import {Theme} from '../const/theme';
 import * as d3 from 'd3';
-import {JSDOM} from 'jsdom';
+import {parseHTML} from 'linkedom';
 export class Card {
     title: string;
     width: number;
@@ -16,8 +16,8 @@ export class Card {
         this.xPadding = xPadding;
         this.yPadding = yPadding;
         // use fake dom let us can get html element
-        const fakeDom = new JSDOM('<!DOCTYPE html><html><body></body></html>');
-        this.body = d3.select(fakeDom.window.document).select('body');
+        const {document} = parseHTML('<!DOCTYPE html><html><body></body></html>');
+        this.body = d3.select(document).select('body');
         this.svg = this.body
             .append('div')
             .attr('class', 'container')

@@ -58,7 +58,7 @@ jobs:
           
       - name: Commit and Push if changed
         run: |
-          git add dist/index.js
+          git add dist
           git commit -m "chore: build distribution" || echo "No changes to commit"
           git push origin HEAD:main
           

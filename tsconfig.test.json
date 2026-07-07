@@ -2,13 +2,16 @@
     "extends": "./tsconfig.json",
     "compilerOptions": {
         "rootDir": ".",
-        "noEmit": true
+        "noEmit": true,
+        "types": ["node", "vitest/globals"]
     },
     "include": [
         "src/**/*",
-        "api/**/*",
         "tests/**/*",
-        "scripts/**/*"
+        "scripts/**/*",
+        "eslint.config.ts",
+        "vite.config.ts",
+        "vitest.config.ts"
     ],
     "exclude": [
         "node_modules"
