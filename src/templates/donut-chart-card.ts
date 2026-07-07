@@ -8,9 +8,12 @@ export function createDonutChartCard(
     data: {name: string; value: number; color: string}[],
     theme: Theme
 ) {
-    const pie = d3.pie<{name: string; value: number; color: string}>().value(function (d) {
-        return d.value;
-    });
+    const pie = d3
+        .pie<{name: string; value: number; color: string}>()
+        .value(function (d) {
+            return d.value;
+        })
+        .sortValues(null);
     const pieData = pie(data);
     const card = new Card(title, 340, 200, theme);
 
@@ -27,9 +30,10 @@ export function createDonutChartCard(
 
     const panel = svg.append('g').attr('transform', `translate(${card.xPadding + margin},${0})`);
     const labelHeight = 14;
+    const legendData = pieData.slice(0, 5);
     panel
         .selectAll(null)
-        .data(pieData)
+        .data(legendData)
         .enter()
         .append('rect')
         .attr('y', d => labelHeight * d.index * 1.8 + card.height / 2 - radius - 12) // rect y-coordinate need fix,so I decrease y, but I don't know why this need fix.
@@ -42,7 +46,7 @@ export function createDonutChartCard(
     // set language text
     panel
         .selectAll(null)
-        .data(pieData)
+        .data(legendData)
         .enter()
         .append('text')
         .text(d => {

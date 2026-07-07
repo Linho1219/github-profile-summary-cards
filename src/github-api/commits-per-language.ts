@@ -37,24 +37,24 @@ const fetcher = (token: string, variables: any) => {
         },
         {
             query: `
-      query CommitLanguages($login: String!) {
-        user(login: $login) {
-          contributionsCollection {
-            commitContributionsByRepository(maxRepositories: 100) {
-              repository {
-                primaryLanguage {
-                  name
-                  color
+                query CommitLanguages($login: String!) {
+                    user(login: $login) {
+                        contributionsCollection {
+                            commitContributionsByRepository(maxRepositories: 100) {
+                                repository {
+                                    primaryLanguage {
+                                        name
+                                        color
+                                    }
+                                }
+                                contributions {
+                                        totalCount
+                                }
+                            }
+                        }
+                    }
                 }
-              }
-              contributions {
-                  totalCount
-              }
-            }
-          }
-        }
-      }
-      `,
+            `,
             variables
         }
     );

@@ -2,6 +2,7 @@ import {ThemeMap} from '../const/theme';
 import {getCommitLanguage, CommitLanguages} from '../github-api/commits-per-language';
 import {createDonutChartCard} from '../templates/donut-chart-card';
 import {writeSVG} from '../utils/file-writer';
+import {groupOtherLanguages, LanguageData} from '../utils/language-data';
 import {getAllThemeNames} from '../utils/theme-selector';
 
 export const createCommitsPerLanguageCard = async function (
@@ -60,7 +61,7 @@ const getCommitsLanguageData = async function (
     token: string
 ): Promise<{name: string; value: number; color: string}[]> {
     const commitLanguages: CommitLanguages = await getCommitLanguage(username, exclude, token);
-    let langData = [];
+    const langData: LanguageData[] = [];
 
     // make a pie data
     for (const [key, value] of commitLanguages.getLanguageMap()) {
@@ -73,7 +74,5 @@ const getCommitsLanguageData = async function (
     langData.sort(function (a, b) {
         return b.value - a.value;
     });
-    langData = langData.slice(0, 5); // get top 5
-
-    return langData;
+    return groupOtherLanguages(langData);
 };

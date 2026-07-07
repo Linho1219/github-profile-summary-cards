@@ -2,6 +2,7 @@ import {ThemeMap} from '../const/theme';
 import {getRepoLanguages} from '../github-api/repos-per-language';
 import {createDonutChartCard} from '../templates/donut-chart-card';
 import {writeSVG} from '../utils/file-writer';
+import {groupOtherLanguages, LanguageData} from '../utils/language-data';
 import {getAllThemeNames} from '../utils/theme-selector';
 
 export const createReposPerLanguageCard = async function (
@@ -36,7 +37,7 @@ const getReposPerLanguageSVG = function (langData: {name: string; value: number;
 
 const getRepoLanguageData = async function (username: string, exclude: Array<string>, token: string) {
     const repoLanguages = await getRepoLanguages(username, exclude, token);
-    let langData = [];
+    const langData: LanguageData[] = [];
 
     // make a pie data
     for (const [key, value] of repoLanguages.getLanguageMap()) {
@@ -49,6 +50,5 @@ const getRepoLanguageData = async function (username: string, exclude: Array<str
     langData.sort(function (a, b) {
         return b.value - a.value;
     });
-    langData = langData.slice(0, 5); // get top 5
-    return langData;
+    return groupOtherLanguages(langData);
 };
