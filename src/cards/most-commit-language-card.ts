@@ -51,7 +51,7 @@ const getCommitsLanguageSVG = function (
             color: '#586e75'
         });
     }
-    const svgString = createDonutChartCard('Top Languages by Commit', langData, ThemeMap.get(themeName)!);
+    const svgString = createDonutChartCard('Top languages by commit', langData, ThemeMap.get(themeName)!);
     return svgString;
 };
 

@@ -3,8 +3,17 @@ import {Theme} from '../const/theme';
 import * as d3 from 'd3';
 import * as d3Axis from 'd3-axis';
 
+const formatUtcOffset = (utcOffset: number) => {
+    const sign = utcOffset >= 0 ? '+' : '-';
+    const absOffset = Math.abs(utcOffset);
+    const hours = Math.floor(absOffset);
+    const minutes = Math.round((absOffset % 1) * 60);
+    const trailing = minutes === 0 ? '' : `:${minutes.toString().padStart(2, '0')}`;
+    return `UTC${sign}${hours}${trailing}`;
+};
+
 export function createProductiveCard(chartData: number[], theme: Theme, utcOffset: number) {
-    const title = 'Commits ' + '(UTC ' + (utcOffset >= 0 ? '+' : '') + utcOffset.toFixed(2) + ')';
+    const title = `Productive Time (${formatUtcOffset(utcOffset)})`;
     const card = new Card(title, 340, 200, theme);
     const svg = card.getSVG();
 
@@ -83,9 +92,10 @@ export function createProductiveCard(chartData: number[], theme: Theme, utcOffse
     chartPanel
         .append('g')
         .append('text')
-        .text('per day hour')
+        .text('commits per day hour')
         .attr('y', 130)
-        .attr('x', 220)
+        .attr('x', 280)
+        .attr('text-anchor', 'end')
         .style('fill', theme.text)
         .style('font-size', `10px`);
 

@@ -26,7 +26,7 @@ const getStatsSVG = function (
     StatsData: {index: number; icon: string; name: string; value: string}[],
     themeName: string
 ) {
-    const title = 'Stats';
+    const title = 'Statistics';
     const svgString = statsCard(`${title}`, StatsData, ThemeMap.get(themeName)!);
     return svgString;
 };

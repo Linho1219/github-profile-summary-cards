@@ -26,11 +26,9 @@ export class Card {
             .attr('width', width)
             .attr('height', height)
             .attr('viewBox', `0 0 ${this.width} ${this.height}`);
-        this.svg.append('style').html(
-            `* {
-          font-family: 'Segoe UI', Ubuntu, "Helvetica Neue", Sans-Serif
-        }`
-        );
+        this.svg.append('style').html(/* css */ `* {
+            font-family: 'Inter', 'Segoe UI', Ubuntu, "Helvetica Neue", Sans-Serif
+        }`);
         const strokeWidth = 1;
         this.svg
             .append('rect')

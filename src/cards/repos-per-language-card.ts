@@ -31,7 +31,7 @@ export const getReposPerLanguageSVGWithThemeName = async function (
 };
 
 const getReposPerLanguageSVG = function (langData: {name: string; value: number; color: string}[], themeName: string) {
-    const svgString = createDonutChartCard('Top Languages by Repo', langData, ThemeMap.get(themeName)!);
+    const svgString = createDonutChartCard('Top languages by repo', langData, ThemeMap.get(themeName)!);
     return svgString;
 };
 
