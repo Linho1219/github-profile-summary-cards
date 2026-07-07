@@ -13,7 +13,7 @@ const formatUtcOffset = (utcOffset: number) => {
 };
 
 export function createProductiveCard(chartData: number[], theme: Theme, utcOffset: number) {
-    const title = `Productive Time (${formatUtcOffset(utcOffset)})`;
+    const title = `Productive time (${formatUtcOffset(utcOffset)})`;
     const card = new Card(title, 340, 200, theme);
     const svg = card.getSVG();
 
