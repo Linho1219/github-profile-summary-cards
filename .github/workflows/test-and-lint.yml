@@ -17,13 +17,14 @@ jobs:
         api_key: ${{ secrets.foresight_api_key }}
 
     - uses: actions/checkout@v4
-    - name: Use Node.js 22
+    - name: Use Node.js 24
       uses: actions/setup-node@v4
       with:
         node-version-file: '.node-version'
-        cache: 'npm'
-    - run: npm install
-    - run: npm run test
+        cache: 'pnpm'
+    - run: corepack enable
+    - run: pnpm install --frozen-lockfile
+    - run: pnpm test
 
     - name: Analyze Test and/or Coverage Results
       uses: catchpoint/foresight-test-kit-action@v1
@@ -40,10 +41,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - name: Use Node.js 22
+    - name: Use Node.js 24
       uses: actions/setup-node@v4
       with:
         node-version-file: '.node-version'
-        cache: 'npm'
-    - run: npm install
-    - run: npm run lint
+        cache: 'pnpm'
+    - run: corepack enable
+    - run: pnpm install --frozen-lockfile
+    - run: pnpm run lint

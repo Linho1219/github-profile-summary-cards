@@ -44,10 +44,12 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version-file: '.node-version'
+          cache: 'pnpm'
           
-      - run: npm ci
-      - run: npm run build
-      - run: npm run package
+      - run: corepack enable
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run build
+      - run: pnpm run package
       
       - name: Git Config
         run: |

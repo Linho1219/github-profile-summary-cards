@@ -4,14 +4,8 @@
         "es6": true,
         "jest": true
     },
-    "plugins": [
-        "jest",
-        "prettier"
-    ],
-    "extends": [
-        "google",
-        "plugin:prettier/recommended"
-    ],
+    "plugins": ["jest", "prettier"],
+    "extends": ["google", "plugin:prettier/recommended"],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
         "ecmaVersion": 12,
@@ -19,7 +13,7 @@
         "project": "./tsconfig.test.json"
     },
     "rules": {
-        "prettier/prettier": "error",
+        "prettier/prettier": ["error", {"endOfLine": "auto"}],
         "require-jsdoc": 0
     }
 }
