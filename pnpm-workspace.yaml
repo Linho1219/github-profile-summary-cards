@@ -1,7 +1,9 @@
 ignoredBuiltDependencies:
-  - pre-commit
   - spawn-sync
   - unrs-resolver
 
 allowBuilds:
   esbuild: true
+  pre-commit: true
+  spawn-sync: false
+  unrs-resolver: false
