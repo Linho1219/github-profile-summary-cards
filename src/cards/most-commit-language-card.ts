@@ -2,10 +2,16 @@ import {ThemeMap} from '../const/theme';
 import {getCommitLanguage, CommitLanguages} from '../github-api/commits-per-language';
 import {createDonutChartCard} from '../templates/donut-chart-card';
 import {writeSVG} from '../utils/file-writer';
+import {getAllThemeNames} from '../utils/theme-selector';
 
-export const createCommitsPerLanguageCard = async function (username: string, exclude: Array<string>, token: string) {
+export const createCommitsPerLanguageCard = async function (
+    username: string,
+    exclude: Array<string>,
+    token: string,
+    themes: string[] = getAllThemeNames()
+) {
     const statsData = await getCommitsLanguageData(username, exclude, token);
-    for (const themeName of ThemeMap.keys()) {
+    for (const themeName of themes) {
         const svgString = getCommitsLanguageSVG(statsData, themeName);
         // output to folder, use 2- prefix for sort in preview
         writeSVG(themeName, '2-most-commit-language', svgString);

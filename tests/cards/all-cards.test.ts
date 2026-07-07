@@ -56,49 +56,33 @@ describe('Cards Generation (Integration)', () => {
     });
 
     it('createProfileDetailsCard should write SVG', async () => {
-        await createProfileDetailsCard(USERNAME, TOKEN);
+        await createProfileDetailsCard(USERNAME, TOKEN, ['default']);
         // Expect writeSVG to be called for each theme (we have ~30 themes)
-        expect(mockWriteSVG).toHaveBeenCalled();
-        expect(mockWriteSVG).toHaveBeenCalledWith(
-            expect.any(String),
-            '0-profile-details',
-            expect.stringContaining('<svg')
-        );
+        expect(mockWriteSVG).toHaveBeenCalledTimes(1);
+        expect(mockWriteSVG).toHaveBeenCalledWith('default', '0-profile-details', expect.stringContaining('<svg'));
     });
 
     it('createReposPerLanguageCard should write SVG', async () => {
-        await createReposPerLanguageCard(USERNAME, [], TOKEN);
-        expect(mockWriteSVG).toHaveBeenCalled();
-        expect(mockWriteSVG).toHaveBeenCalledWith(
-            expect.any(String),
-            '1-repos-per-language',
-            expect.stringContaining('<svg')
-        );
+        await createReposPerLanguageCard(USERNAME, [], TOKEN, ['default']);
+        expect(mockWriteSVG).toHaveBeenCalledTimes(1);
+        expect(mockWriteSVG).toHaveBeenCalledWith('default', '1-repos-per-language', expect.stringContaining('<svg'));
     });
 
     it('createCommitsPerLanguageCard should write SVG', async () => {
-        await createCommitsPerLanguageCard(USERNAME, [], TOKEN);
-        expect(mockWriteSVG).toHaveBeenCalled();
-        expect(mockWriteSVG).toHaveBeenCalledWith(
-            expect.any(String),
-            '2-most-commit-language',
-            expect.stringContaining('<svg')
-        );
+        await createCommitsPerLanguageCard(USERNAME, [], TOKEN, ['default']);
+        expect(mockWriteSVG).toHaveBeenCalledTimes(1);
+        expect(mockWriteSVG).toHaveBeenCalledWith('default', '2-most-commit-language', expect.stringContaining('<svg'));
     });
 
     it('createStatsCard should write SVG', async () => {
-        await createStatsCard(USERNAME, TOKEN);
-        expect(mockWriteSVG).toHaveBeenCalled();
-        expect(mockWriteSVG).toHaveBeenCalledWith(expect.any(String), '3-stats', expect.stringContaining('<svg'));
+        await createStatsCard(USERNAME, TOKEN, ['default']);
+        expect(mockWriteSVG).toHaveBeenCalledTimes(1);
+        expect(mockWriteSVG).toHaveBeenCalledWith('default', '3-stats', expect.stringContaining('<svg'));
     });
 
     it('createProductiveTimeCard should write SVG', async () => {
-        await createProductiveTimeCard(USERNAME, 0, TOKEN);
-        expect(mockWriteSVG).toHaveBeenCalled();
-        expect(mockWriteSVG).toHaveBeenCalledWith(
-            expect.any(String),
-            '4-productive-time',
-            expect.stringContaining('<svg')
-        );
+        await createProductiveTimeCard(USERNAME, 0, TOKEN, ['default']);
+        expect(mockWriteSVG).toHaveBeenCalledTimes(1);
+        expect(mockWriteSVG).toHaveBeenCalledWith('default', '4-productive-time', expect.stringContaining('<svg'));
     });
 });

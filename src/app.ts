@@ -8,6 +8,7 @@ import {createProductiveTimeCard} from './cards/productive-time-card';
 import {spawn} from 'child_process';
 import {translateLanguage} from './utils/translator';
 import {OUTPUT_PATH, generatePreviewMarkdown} from './utils/file-writer';
+import {parseThemeNames} from './utils/theme-selector';
 
 const execCmd = (cmd: string, args: string[] = []) =>
     new Promise((resolve, reject) => {
@@ -48,6 +49,8 @@ const action = async () => {
     core.info(`UTC offset: ${utcOffset}`);
     const exclude = core.getInput('EXCLUDE', {required: false}).split(',');
     core.info(`Excluded languages: ${exclude}`);
+    const themes = parseThemeNames(core.getInput('THEMES', {required: false}));
+    core.info(`Themes: ${themes.join(', ')}`);
     const autoPush = core.getBooleanInput('AUTO_PUSH', {required: false});
     core.info(`You ${autoPush ? 'have' : "haven't"} set automatically push commits`);
 
@@ -59,7 +62,7 @@ const action = async () => {
         // ProfileDetailsCard
         try {
             core.info(`Creating ProfileDetailsCard...`);
-            await createProfileDetailsCard(username, process.env.GITHUB_TOKEN!);
+            await createProfileDetailsCard(username, process.env.GITHUB_TOKEN!, themes);
             await sendAnalytics('action-profile-details-card', {username});
         } catch (error: any) {
             core.error(`Error when creating ProfileDetailsCard \n${error.stack}`);
@@ -68,7 +71,7 @@ const action = async () => {
         // ReposPerLanguageCard
         try {
             core.info(`Creating ReposPerLanguageCard...`);
-            await createReposPerLanguageCard(username, exclude, process.env.GITHUB_TOKEN!);
+            await createReposPerLanguageCard(username, exclude, process.env.GITHUB_TOKEN!, themes);
         } catch (error: any) {
             core.error(`Error when creating ReposPerLanguageCard \n${error.stack}`);
         }
@@ -76,7 +79,7 @@ const action = async () => {
         // CommitsPerLanguageCard
         try {
             core.info(`Creating CommitsPerLanguageCard...`);
-            await createCommitsPerLanguageCard(username, exclude, process.env.GITHUB_TOKEN!);
+            await createCommitsPerLanguageCard(username, exclude, process.env.GITHUB_TOKEN!, themes);
         } catch (error: any) {
             core.error(`Error when creating CommitsPerLanguageCard \n${error.stack}`);
         }
@@ -84,14 +87,14 @@ const action = async () => {
         // StatsCard
         try {
             core.info(`Creating StatsCard...`);
-            await createStatsCard(username, process.env.GITHUB_TOKEN!);
+            await createStatsCard(username, process.env.GITHUB_TOKEN!, themes);
         } catch (error: any) {
             core.error(`Error when creating StatsCard \n${error.stack}`);
         }
         // ProductiveTimeCard
         try {
             core.info(`Creating ProductiveTimeCard...`);
-            await createProductiveTimeCard(username, utcOffset, process.env.GITHUB_TOKEN!);
+            await createProductiveTimeCard(username, utcOffset, process.env.GITHUB_TOKEN!, themes);
         } catch (error: any) {
             core.error(`Error when creating ProductiveTimeCard \n${error.stack}`);
         }
@@ -99,7 +102,7 @@ const action = async () => {
         // generate markdown
         try {
             core.info(`Creating preview markdown...`);
-            generatePreviewMarkdown(true);
+            generatePreviewMarkdown(true, themes);
         } catch (error: any) {
             core.error(`Error when creating preview markdown \n${error.stack}`);
         }
@@ -127,14 +130,14 @@ const action = async () => {
     }
 };
 
-const main = async (username: string, utcOffset: number, exclude: Array<string>) => {
+const main = async (username: string, utcOffset: number, exclude: Array<string>, themes: string[]) => {
     try {
-        await createProfileDetailsCard(username, process.env.GITHUB_TOKEN!);
-        await createReposPerLanguageCard(username, exclude, process.env.GITHUB_TOKEN!);
-        await createCommitsPerLanguageCard(username, exclude, process.env.GITHUB_TOKEN!);
-        await createStatsCard(username, process.env.GITHUB_TOKEN!);
-        await createProductiveTimeCard(username, utcOffset, process.env.GITHUB_TOKEN!);
-        generatePreviewMarkdown(false);
+        await createProfileDetailsCard(username, process.env.GITHUB_TOKEN!, themes);
+        await createReposPerLanguageCard(username, exclude, process.env.GITHUB_TOKEN!, themes);
+        await createCommitsPerLanguageCard(username, exclude, process.env.GITHUB_TOKEN!, themes);
+        await createStatsCard(username, process.env.GITHUB_TOKEN!, themes);
+        await createProductiveTimeCard(username, utcOffset, process.env.GITHUB_TOKEN!, themes);
+        generatePreviewMarkdown(false, themes);
     } catch (error: any) {
         console.error(error);
     }
@@ -154,5 +157,6 @@ if (process.argv.length == 2) {
             exclude.push(translatedLanguage.toLowerCase());
         });
     }
-    main(username, utcOffset, exclude);
+    const themes = parseThemeNames(process.argv[5] || '');
+    main(username, utcOffset, exclude, themes);
 }

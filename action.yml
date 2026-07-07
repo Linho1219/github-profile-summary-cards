@@ -23,6 +23,11 @@ inputs:
     required: false
     description: 'A comma separated list of languages to exclude'
     default: ''
+  THEMES:
+    type: string
+    required: false
+    description: 'A comma separated list of themes to generate. Leave empty to generate all themes'
+    default: ''
   AUTO_PUSH:
     type: boolean
     required: false

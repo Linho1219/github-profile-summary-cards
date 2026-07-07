@@ -2,10 +2,16 @@ import {ThemeMap} from '../const/theme';
 import {getProductiveTime} from '../github-api/productive-time';
 import {createProductiveCard as productiveTimeCard} from '../templates/productive-time-card';
 import {writeSVG} from '../utils/file-writer';
+import {getAllThemeNames} from '../utils/theme-selector';
 
-export const createProductiveTimeCard = async function (username: string, utcOffset: number, token: string) {
+export const createProductiveTimeCard = async function (
+    username: string,
+    utcOffset: number,
+    token: string,
+    themes: string[] = getAllThemeNames()
+) {
     const productiveTimeData = await getProductiveTimeData(username, utcOffset, token);
-    for (const themeName of ThemeMap.keys()) {
+    for (const themeName of themes) {
         const svgString = getProductiveTimeSVG(productiveTimeData, themeName, utcOffset);
         // output to folder, use 4- prefix for sort in preview
         writeSVG(themeName, '4-productive-time', svgString);

@@ -2,10 +2,16 @@ import {ThemeMap} from '../const/theme';
 import {getRepoLanguages} from '../github-api/repos-per-language';
 import {createDonutChartCard} from '../templates/donut-chart-card';
 import {writeSVG} from '../utils/file-writer';
+import {getAllThemeNames} from '../utils/theme-selector';
 
-export const createReposPerLanguageCard = async function (username: string, exclude: Array<string>, token: string) {
+export const createReposPerLanguageCard = async function (
+    username: string,
+    exclude: Array<string>,
+    token: string,
+    themes: string[] = getAllThemeNames()
+) {
     const langData = await getRepoLanguageData(username, exclude, token);
-    for (const themeName of ThemeMap.keys()) {
+    for (const themeName of themes) {
         const svgString = getReposPerLanguageSVG(langData, themeName);
         // output to folder, use 1- prefix for sort in preview
         writeSVG(themeName, '1-repos-per-language', svgString);

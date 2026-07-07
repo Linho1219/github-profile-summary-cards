@@ -5,17 +5,23 @@ import {getProfileDetails, ProfileDetails, ProfileContribution} from '../github-
 import {getContributionByYear} from '../github-api/contributions-by-year';
 import {createDetailCard} from '../templates/profile-details-card';
 import {writeSVG} from '../utils/file-writer';
+import {getAllThemeNames} from '../utils/theme-selector';
 
 /**
  * Creates a Profile Details Card SVG.
  *
  * @param {string} username - The GitHub username.
  * @param {string} token - The GitHub API token.
+ * @param {string[]} themes - The card themes to generate.
  * @return {Promise<void>}
  */
-export const createProfileDetailsCard = async function (username: string, token: string) {
+export const createProfileDetailsCard = async function (
+    username: string,
+    token: string,
+    themes: string[] = getAllThemeNames()
+) {
     const profileDetailsData = await getProfileDetailsData(username, token);
-    for (const themeName of ThemeMap.keys()) {
+    for (const themeName of themes) {
         const title =
             profileDetailsData[0].name == null ? `${username}` : `${username} (${profileDetailsData[0].name})`;
         const svgString = getProfileDetailsSVG(

@@ -5,10 +5,11 @@ import {getProfileDetails} from '../github-api/profile-details';
 import {getContributionByYear} from '../github-api/contributions-by-year';
 import {createStatsCard as statsCard} from '../templates/stats-card';
 import {writeSVG} from '../utils/file-writer';
+import {getAllThemeNames} from '../utils/theme-selector';
 
-export const createStatsCard = async function (username: string, token: string) {
+export const createStatsCard = async function (username: string, token: string, themes: string[] = getAllThemeNames()) {
     const statsData = await getStatsData(username, token);
-    for (const themeName of ThemeMap.keys()) {
+    for (const themeName of themes) {
         const svgString = getStatsSVG(statsData, themeName);
         // output to folder, use 3- prefix for sort in preview
         writeSVG(themeName, '3-stats', svgString);

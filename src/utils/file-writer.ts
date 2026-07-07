@@ -1,6 +1,6 @@
 import * as core from '@actions/core';
 import {mkdirSync, writeFileSync, readdirSync} from 'fs';
-import {ThemeMap} from '../const/theme';
+import {getAllThemeNames} from './theme-selector';
 
 export const OUTPUT_PATH = './profile-summary-card-output/';
 const GITHUB_REPOSITORY = process.env.GITHUB_REPOSITORY;
@@ -25,7 +25,7 @@ function getAllFileInFolder(folder: string): string[] {
     return files;
 }
 
-export const generatePreviewMarkdown = function (isInGithubAction: boolean) {
+export const generatePreviewMarkdown = function (isInGithubAction: boolean, themes: string[] = getAllThemeNames()) {
     const targetFolder = `${OUTPUT_PATH}`;
     let readmeContent = '';
     const urlPrefix = isInGithubAction
@@ -33,7 +33,7 @@ export const generatePreviewMarkdown = function (isInGithubAction: boolean) {
         : `.`;
 
     // First, we generate preview readme for each theme
-    for (const themeName of ThemeMap.keys()) {
+    for (const themeName of themes) {
         generateThemePreviewReadme(urlPrefix, themeName);
     }
     readmeContent += `
@@ -45,7 +45,7 @@ Here are all cards with themes.
 
 `;
 
-    for (const themeName of ThemeMap.keys()) {
+    for (const themeName of themes) {
         readmeContent += `## [${themeName}](./${themeName}/README.md)`;
         readmeContent += getThemeMarkdown(`${urlPrefix}/${themeName}`);
     }
