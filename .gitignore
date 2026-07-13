@@ -113,6 +113,7 @@ out
 
 # Ignore output
 profile-summary-card-output/
+dist/
 
 # ctag
 tags

@@ -6,10 +6,12 @@ export const OUTPUT_PATH = './profile-summary-card-output/';
 const GITHUB_REPOSITORY = process.env.GITHUB_REPOSITORY;
 
 // If neither a branch or tag is available for the event type, the variable will not exist. https://docs.github.com/en/actions/configuring-and-managing-workflows/using-environment-variables
+const INPUT_BRANCH = core.getInput('BRANCH_NAME', {required: false});
 const GITHUB_BRANCH =
-    process.env.GITHUB_REF == undefined
+    INPUT_BRANCH ||
+    (process.env.GITHUB_REF == undefined
         ? core.getInput('BRANCH_NAME', {required: false})
-        : process.env.GITHUB_REF.split('/').pop();
+        : process.env.GITHUB_REF.split('/').pop());
 
 export const writeSVG = function (folder: string, filename: string, svgString: string) {
     const targetFolder = `${OUTPUT_PATH}${folder}/`;
